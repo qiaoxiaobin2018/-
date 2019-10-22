@@ -4,6 +4,7 @@ import MyServlets.BaseServlet;
 import cn.itcast.commons.CommonUtils;
 import cn.itcast.cstm.Dao.CustomerException;
 import cn.itcast.cstm.Domain.Customer;
+import cn.itcast.cstm.Domain.PageBean;
 import cn.itcast.cstm.Service.CustomerService;
 import org.omg.CORBA.Request;
 
@@ -63,6 +64,33 @@ public class CustomerServlet extends BaseServlet {
                 req.setAttribute("customerList",customerService.findAll());
                 return "f:/list.jsp";
         }
+    /*
+     * 查询所有客户
+     * */
+    public String newFindAll(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, CustomerException {
+        /**
+         * 1.  获取页面传递的PageNum;
+         * 2. 给定PageSize的值
+         * 3. 使用上述两个参数调用service中的方法，得到PageBean，保存到Request域中
+         * 4. 转发到list.jsp中
+         * */
+        int pageNum = getPageNum(req);
+        int pageSize = 10;
+        PageBean<Customer> pageBean = customerService.newFindAll(pageNum,pageSize);
+        req.setAttribute("pageBean",pageBean);
+        return "f:/list.jsp";
+    }
+    /*
+    * 获取PageNum
+    * */
+    public int getPageNum(HttpServletRequest req){
+        String pageNum = req.getParameter("pageNum");
+        if(pageNum == null || pageNum.trim().isEmpty()){
+            return  1;
+        }
+        return Integer.parseInt(pageNum);
+
+    }
     /*
      * 编辑之前的加载工作，把要编辑的客户信息加载到edit.jsp页面中
      * */

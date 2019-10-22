@@ -3,6 +3,7 @@ package cn.itcast.cstm.Service;
 import cn.itcast.cstm.Dao.CustomerDao;
 import cn.itcast.cstm.Dao.CustomerException;
 import cn.itcast.cstm.Domain.Customer;
+import cn.itcast.cstm.Domain.PageBean;
 
 import java.util.List;
 
@@ -50,5 +51,9 @@ public class CustomerService {
     * */
     public List<Customer> search(Customer customer) throws CustomerException {
         return customerDao.search(customer);
+    }
+
+    public PageBean<Customer> newFindAll(int pageNum, int pageSize) {
+        return customerDao.newFindAll(pageNum,pageSize);
     }
 }

@@ -1,6 +1,7 @@
 package cn.itcast.cstm.Dao;
 
 import cn.itcast.cstm.Domain.Customer;
+import cn.itcast.cstm.Domain.PageBean;
 import jdbc.TxQueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
@@ -122,5 +123,14 @@ public class CustomerDao {
         } catch (SQLException e) {
             throw new CustomerException("查询用户出错！");
         }
+    }
+    /*
+    * 实现分页的查询所有
+    * */
+    public PageBean<Customer> newFindAll(int pageNum, int pageSize){
+
+
+        return null;
+
     }
 }
