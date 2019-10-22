@@ -1,0 +1,29 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="customerManageSystem:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/customerManageSystem_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="customerManageSystem/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="customerManageSystem" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="file-copy" path="D:/jar file/数据库/C3P0连接池jar包（完整版）/c3p0-0.9.5.2.jar" />
+          <element id="file-copy" path="D:/jar file/数据库/C3P0连接池jar包（完整版）/mchange-commons-java-0.2.12.jar" />
+          <element id="file-copy" path="D:/jar file/数据库/commons-pool2-2.6.1.jar" />
+          <element id="file-copy" path="D:/jar file/数据库/mysql-connector-java-8.0.11.jar" />
+          <element id="file-copy" path="D:/jar file/CommonUtils工具类的jar（有效）/commons-beanutils-1.8.3.jar" />
+          <element id="file-copy" path="D:/jar file/CommonUtils工具类的jar（有效）/commons-logging-1.1.1.jar" />
+          <element id="file-copy" path="D:/jar file/MyTools-Second.jar" />
+          <element id="file-copy" path="D:/jar file/CommonUtils工具类的jar（有效）/itcast-tools-1.4.jar" />
+          <element id="file-copy" path="D:/jar file/Mytools-third.jar" />
+          <element id="file-copy" path="D:/jar file/Mytools-fourth.jar" />
+          <element id="file-copy" path="D:/jar file/Mytools-fifth.jar" />
+          <element id="file-copy" path="D:/jar file/Jstl标签库/standard.jar" />
+          <element id="file-copy" path="D:/jar file/Jstl标签库/jstl.jar" />
+          <element id="file-copy" path="D:/jar file/commons-dbutils-1.7/commons-dbutils-1.7.jar" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

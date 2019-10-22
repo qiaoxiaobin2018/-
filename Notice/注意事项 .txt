@@ -1,0 +1,2 @@
+1.JDBC的url需要添加时区，否则服务器出错；
+2.servlet继承 BaseServlet 时，方法中的参数必须为public;
