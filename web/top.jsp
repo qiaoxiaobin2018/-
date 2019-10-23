@@ -21,7 +21,7 @@
 <body style="text-align: center;">
     <h2>客户关系管理系统</h2>
     <a href="<c:url value="/add.jsp"/>">添加客户</a> |
-    <a href="<c:url value="/customerServlet?method=findAll"/>">查询客户</a> |
+    <a href="<c:url value="/customerServlet?method=newFindAll"/>">查询客户</a> |
     <a href="<c:url value="/query.jsp"/>">高级搜索</a>
 </body>
 </html>

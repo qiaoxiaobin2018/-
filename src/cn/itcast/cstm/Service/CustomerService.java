@@ -49,11 +49,17 @@ public class CustomerService {
     /*
     * 高级搜索
     * */
-    public List<Customer> search(Customer customer) throws CustomerException {
-        return customerDao.search(customer);
-    }
+//    public List<Customer> search(Customer customer) throws CustomerException {
+//        return customerDao.search(customer);
+//    }
 
-    public PageBean<Customer> newFindAll(int pageNum, int pageSize) {
+    public PageBean<Customer> newFindAll(int pageNum, int pageSize) throws CustomerException {
         return customerDao.newFindAll(pageNum,pageSize);
+    }
+    /*
+     * 高级搜索
+     * */
+    public PageBean<Customer> search(Customer customer, int pageNum, int pageSize) throws CustomerException {
+        return customerDao.search(customer, pageNum, pageSize);
     }
 }

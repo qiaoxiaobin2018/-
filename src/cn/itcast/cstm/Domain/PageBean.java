@@ -8,6 +8,15 @@ public class PageBean<T> {
     private int totalRecords;//总记录数
     private int pageSize;//每页的记录数
     private List<T> beanList;//当前页的记录
+    private String paramString;// 高级查询的条件
+
+    public String getParamString() {
+        return paramString;
+    }
+
+    public void setParamString(String paramString) {
+        this.paramString = paramString;
+    }
 
     public int getPageNum() {
         return pageNum;
@@ -56,11 +65,12 @@ public class PageBean<T> {
     public PageBean() {
     }
 
-    public PageBean(int pageNum, int totalRecords, int pageSize, List<T> beanList) {
+    public PageBean(int pageNum, int totalRecords, int pageSize, List<T> beanList, String paramString) {
         this.pageNum = pageNum;
         this.totalRecords = totalRecords;
         this.pageSize = pageSize;
         this.beanList = beanList;
+        this.paramString = paramString;
     }
 
     @Override
@@ -71,6 +81,7 @@ public class PageBean<T> {
                 ", totalRecords=" + totalRecords +
                 ", pageSize=" + pageSize +
                 ", beanList=" + beanList +
+                ", paramString=" + paramString+
                 '}';
     }
 }

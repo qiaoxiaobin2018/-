@@ -18,7 +18,7 @@
 </head>
 <body style="text-align: center;">
 <h3 align="center">高级搜索</h3>
-<form action="<c:url value="/customerServlet"/> " method="post">
+<form action="<c:url value="/customerServlet"/> " method="get">
     <%--    向servlet传递一个名为method的参数，其值表示要调用servlet的哪一个方法--%>
     <input type="hidden" name="method" value="search"/>
         <table align="center">

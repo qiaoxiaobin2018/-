@@ -6,6 +6,7 @@ import cn.itcast.cstm.Dao.CustomerException;
 import cn.itcast.cstm.Domain.Customer;
 import cn.itcast.cstm.Domain.PageBean;
 import cn.itcast.cstm.Service.CustomerService;
+import jdk.nashorn.internal.codegen.CompilerConstants;
 import org.omg.CORBA.Request;
 
 import javax.servlet.ServletException;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
@@ -65,9 +67,9 @@ public class CustomerServlet extends BaseServlet {
                 return "f:/list.jsp";
         }
     /*
-     * 查询所有客户
+     * 查询所有客户(分页)
      * */
-    public String newFindAll(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, CustomerException {
+    public String newFindAll(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         /**
          * 1.  获取页面传递的PageNum;
          * 2. 给定PageSize的值
@@ -76,9 +78,15 @@ public class CustomerServlet extends BaseServlet {
          * */
         int pageNum = getPageNum(req);
         int pageSize = 10;
-        PageBean<Customer> pageBean = customerService.newFindAll(pageNum,pageSize);
-        req.setAttribute("pageBean",pageBean);
-        return "f:/list.jsp";
+        try {
+            PageBean<Customer> pageBean = customerService.newFindAll(pageNum,pageSize);
+            pageBean.setParamString(getUrl(req));
+            req.setAttribute("pageBean",pageBean);
+            return "f:/list.jsp";
+        } catch (CustomerException e) {
+            req.setAttribute("msg",e.getMessage());
+            return "f:/msg.jsp";
+        }
     }
     /*
     * 获取PageNum
@@ -120,7 +128,7 @@ public class CustomerServlet extends BaseServlet {
             req.setAttribute("msg","修改成功！");
             return "f:/msg.jsp";
         } catch (CustomerException e) {
-            req.setAttribute("msg","修改失败！");
+            req.setAttribute("msg",e.getMessage());
             return "f:/msg.jsp";
         }
     }
@@ -142,21 +150,102 @@ public class CustomerServlet extends BaseServlet {
     /**
      * 高级搜索
      * */
+//    public String search(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+////        /*
+////        * 1.封装查询条件
+////        * 2.调用service的search方法
+////        * 3.若成功，保存结果到request域中，转发到list.jsp中
+////        * 4.若失败，转发到msg.jsp中，并提示出错信息！
+////        * */
+////        Customer customer = CommonUtils.toBean(req.getParameterMap(),Customer.class);
+////        try {
+////            List<Customer> list = customerService.search(customer);
+////            req.setAttribute("customerList",list);
+////            return "f:/list.jsp";
+////        } catch (CustomerException e) {
+////            req.setAttribute("msg","查询失败！");
+////            return "f:/msg.jsp";
+////        }
+////    }
     public String search(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
         /*
-        * 1.封装查询条件
-        * 2.调用service的search方法
-        * 3.若成功，保存结果到request域中，转发到list.jsp中
-        * 4.若失败，转发到msg.jsp中，并提示出错信息！
+        * 1.封装查询条件到对象中
+        * 2.获取pageNum
+        * 3.设置pageSize
+        * 4.使用以上三个参数调用service中的方法
+        * 5.保存pageBean 到request域中
+        * 6.转发至list.jsp中
         * */
         Customer customer = CommonUtils.toBean(req.getParameterMap(),Customer.class);
+        /*
+        * 请求方式：GET
+        * 处理编码
+        * */
+//        customer = encoding(customer);
+
+
+        System.out.println(customer);
+        int pageNum = getPageNum(req);
+        int pageSize = 10;
+        /*
+        * 截取 url
+        * */
+        System.out.println("pageNum: "+pageNum);
+        System.out.println("["+getUrl(req)+"]");
         try {
-            List<Customer> list = customerService.search(customer);
-            req.setAttribute("customerList",list);
+            PageBean<Customer> pageBean = customerService.search(customer,pageNum,pageSize);
+            /*
+             * 设置paramString
+             * */
+            pageBean.setParamString(getUrl(req));
+            req.setAttribute("pageBean",pageBean);
             return "f:/list.jsp";
         } catch (CustomerException e) {
-            req.setAttribute("msg","查询失败！");
+            req.setAttribute("msg",e.getMessage());
             return "f:/msg.jsp";
         }
+
+    }
+    /*
+    * 处理Get 的编码
+    * */
+    private Customer encoding(Customer customer) throws UnsupportedEncodingException {
+        String cname = customer.getCname();
+        String gender = customer.getGender();
+        String cellphone = customer.getCellphone();
+        String email = customer.getEmail();
+        if(!(cname == null && cname.trim().isEmpty()) ){
+            cname = new String(cname.getBytes("ISO-8859-1"),"utf-8");
+            customer.setCname(cname);
+        }
+        if(!(gender == null && gender.trim().isEmpty()) ){
+            gender = new String(gender.getBytes("ISO-8859-1"),"utf-8");
+            customer.setGender(gender);
+        }
+        if(!(cellphone == null && cellphone.trim().isEmpty()) ){
+            cellphone = new String(cellphone.getBytes("ISO-8859-1"),"utf-8");
+            customer.setCellphone(cellphone);
+        }
+        if(!(email == null && email.trim().isEmpty()) ){
+            email = new String(email.getBytes("ISO-8859-1"),"utf-8");
+            customer.setEmail(email);
+        }
+        return customer;
+    }
+    /*
+    * 截取url
+    * */
+    private String getUrl(HttpServletRequest req){
+        String contextPath = req.getContextPath();
+        String servletPath = req.getServletPath();
+        String queryString = req.getQueryString();
+        //去除上次请求URL中的pageNum参数，以免出现多个pageNum参数，出现错误
+        if(queryString.contains("&pageNum=")){
+            int index = queryString.lastIndexOf("&pageNum=");
+            queryString = queryString.substring(0,index);
+        }
+
+        return servletPath+"?"+queryString;
+
     }
 }
